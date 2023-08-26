@@ -82,7 +82,6 @@ int main()
             vaciarAlumno(alumnos);
             break;
         case 6:
-            grabarDatos(alumnos);
             salir = 1;
             break;
         default:
@@ -94,6 +93,7 @@ int main()
 
 int menu()
 {
+    system("cls");
     int opcion;
 
     cout << "Menu:" << endl;
@@ -155,7 +155,7 @@ void mostrarAlumnos(Alumno alumnos[], int tam)
 
     if(!contador)
         cout << "No hay alumnos cargados! " << endl;
-    //system("pause");
+    system("pause");
 }
 
 void alumnosPromocionados(Alumno alumnos[], int tam)
@@ -166,7 +166,7 @@ void alumnosPromocionados(Alumno alumnos[], int tam)
             cout << "Aluno: " << alumnos[i].nombreApellido << " apto a promocionar!" << endl;
         }
     }
-    //system("pause");
+    system("pause");
 }
 
 void mostrarAlumnoPorLegajo(Alumno alumnos[], int tam)
@@ -190,7 +190,7 @@ void mostrarAlumnoPorLegajo(Alumno alumnos[], int tam)
         cout << alumnos[posicionAlumno].domicilio.altura << ", ";
         cout << alumnos[posicionAlumno].domicilio.codigoPostal << endl;
     }
-    //system("pause");
+    system("pause");
 }
 
 void vaciarAlumno(Alumno alumnos[])
@@ -232,11 +232,11 @@ int buscaAlumnoPorLegajo(Alumno alumnos[], int tam, int legajo){
 }
 
 void grabarDatos(Alumno alumnos[]){
-    FILE *f;
-    f = fopen("struct_archivo", "wb");
+    FILE *f = fopen("data", "wb");
 
     if(f == NULL){
         cout << "No se puede crear el archivo!" << endl;
+        return;
     }
 
     fwrite(alumnos, sizeof(Alumno), 1, f);
@@ -245,17 +245,14 @@ void grabarDatos(Alumno alumnos[]){
 }
 
 void leerDatos(Alumno alumnos[]){
-    FILE *f;
-    f = fopen("struct_archivo", "rb");
+    FILE *f = fopen("data", "rb");
 
     if (f == NULL){
-        cout << "No se puede leer el archivo!" << endl;
+        cout << "No se pudo leer el archivo!" << endl;
+        return;
     }
+    fread(&alumnos, sizeof(alumnos), 1, f);
+    fclose(f);
 
-    else{
-        fread(alumnos, sizeof(Alumno), 1, f);
-        fclose(f);
-    }
-
-    cout << "Se ha leído el archivo!" << endl;
+    cout << "Se ha leido el archivo!" << endl;
 }
