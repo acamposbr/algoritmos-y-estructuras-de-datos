@@ -51,13 +51,13 @@ void mostrarAlumnoPorLegajo(Alumno alumnos[], int tam);
 void vaciarAlumno(Alumno alumnos[]);
 int verificaPosicionLibre(Alumno alumnos[], int tam);
 int buscaAlumnoPorLegajo(Alumno alumnos[], int tam, int legajo);
-void grabarDatos(Alumno alumnos[]);
-void leerDatos(Alumno alumnos[]);
+void grabarDatos(Alumno alumnos[], int tam);
+void leerDatos(Alumno alumnos[], int tam);
 
 int main()
 {
     Alumno alumnos[N];
-    leerDatos(alumnos); // Carga la data del archivo
+    leerDatos(alumnos, N); // Carga la data del archivo
     bool salir = 0;
 
     do
@@ -136,7 +136,7 @@ void cargarAlumno(Alumno alumnos[]){
     cout << "Codigo postal: ";
     cin >> alumnos[posicion].domicilio.codigoPostal;
 
-    grabarDatos(alumnos);
+    grabarDatos(alumnos, N);
 }
 
 void mostrarAlumnos(Alumno alumnos[], int tam)
@@ -231,27 +231,31 @@ int buscaAlumnoPorLegajo(Alumno alumnos[], int tam, int legajo){
     return -1;
 }
 
-void grabarDatos(Alumno alumnos[]){
-    FILE *f = fopen("data", "wb");
+void grabarDatos(Alumno alumnos[], int tam){
+    FILE* f = fopen("data", "ab");
 
-    if(f == NULL){
+    if (f == NULL){
         cout << "No se puede crear el archivo!" << endl;
         return;
     }
 
-    fwrite(alumnos, sizeof(Alumno), 1, f);
+    for (int i = 0; i < tam; i++){
+        fwrite(&alumnos[i], sizeof(Alumno[i]), 1, f);
+    }
     fclose(f);
-    cout << "Se ha escrito el archivo!" << endl;
 }
 
-void leerDatos(Alumno alumnos[]){
+void leerDatos(Alumno alumnos[], int tam){
     FILE *f = fopen("data", "rb");
 
     if (f == NULL){
         cout << "No se pudo leer el archivo!" << endl;
         return;
     }
-    fread(&alumnos, sizeof(alumnos), 1, f);
+
+    for (int i = 0; i < tam; i++){
+        fread(&alumnos[i], sizeof(alumnos[i]), 1, f);
+    }
     fclose(f);
 
     cout << "Se ha leido el archivo!" << endl;
