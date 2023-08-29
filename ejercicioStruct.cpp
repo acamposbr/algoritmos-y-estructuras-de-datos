@@ -11,6 +11,7 @@ Extender el programa actual para que no se trate de cargar todos los Alumnos y l
 */
 
 #include <iostream>
+#include <stdio.h>
 #include <string>
 #include <cstring>
 
@@ -82,6 +83,7 @@ int main()
             vaciarAlumno(alumnos);
             break;
         case 6:
+            grabarDatos(alumnos, N);
             salir = 1;
             break;
         default:
@@ -136,7 +138,6 @@ void cargarAlumno(Alumno alumnos[]){
     cout << "Codigo postal: ";
     cin >> alumnos[posicion].domicilio.codigoPostal;
 
-    grabarDatos(alumnos, N);
 }
 
 void mostrarAlumnos(Alumno alumnos[], int tam)
@@ -232,7 +233,7 @@ int buscaAlumnoPorLegajo(Alumno alumnos[], int tam, int legajo){
 }
 
 void grabarDatos(Alumno alumnos[], int tam){
-    FILE* f = fopen("data", "ab");
+    FILE* f = fopen("data", "wb");
 
     if (f == NULL){
         cout << "No se puede crear el archivo!" << endl;
@@ -240,23 +241,22 @@ void grabarDatos(Alumno alumnos[], int tam){
     }
 
     for (int i = 0; i < tam; i++){
-        fwrite(&alumnos[i], sizeof(Alumno[i]), 1, f);
+        fwrite(&alumnos[i], sizeof(Alumno), 1, f);
     }
     fclose(f);
 }
 
 void leerDatos(Alumno alumnos[], int tam){
-    FILE *f = fopen("data", "rb");
+    FILE* f = fopen("data", "rb");
 
     if (f == NULL){
         cout << "No se pudo leer el archivo!" << endl;
         return;
     }
 
-    for (int i = 0; i < tam; i++){
-        fread(&alumnos[i], sizeof(alumnos[i]), 1, f);
+    for (int i = 0; i < tam; i++)
+    {
+        fread(&alumnos[i], sizeof(Alumno), 1, f);
     }
     fclose(f);
-
-    cout << "Se ha leido el archivo!" << endl;
 }
